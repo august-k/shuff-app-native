@@ -5,22 +5,22 @@ type Props = {
   text: string;
   backgroundColor: CSSProperties["backgroundColor"];
   textColor: CSSProperties["color"];
-  isCollapsed: boolean;
+  isActive: boolean;
 };
 
 const DropdownTitle: React.FC<Props> = ({
   text,
   textColor,
   backgroundColor,
-  isCollapsed = false,
+  isActive,
 }) => (
-  <TitleContainer backgroundColor={backgroundColor}>
+  <TitleContainer backgroundColor={backgroundColor} isActive={isActive}>
     <Title color={textColor}>{text}</Title>
     <Icon
       name="chevron-down"
       size={18}
       color={textColor}
-      isCollapsed={!isCollapsed}
+      isActive={!isActive}
     />
   </TitleContainer>
 );
@@ -37,6 +37,12 @@ const TitleContainer = styled.View`
   align-items: center;
   border-radius: 8px;
   z-index: 2;
+  ${({ isActive }) =>
+    isActive &&
+    `
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  `}
 `;
 
 const Title = styled.Text`
@@ -46,6 +52,6 @@ const Title = styled.Text`
 `;
 
 const Icon = styled(Ionicons)`
-  transform: ${({ isCollapsed }) =>
-    isCollapsed ? `rotate(180deg)` : `rotate(0deg)`};
+  transform: ${({ isActive }) =>
+    isActive ? `rotate(0deg)` : `rotate(180deg)`};
 `;

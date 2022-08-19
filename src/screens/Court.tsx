@@ -1,5 +1,4 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 import { Court as CourtComponent } from "../components";
 
@@ -27,7 +26,7 @@ const Court = ({ navigation, theme }) => {
 export default Court;
 
 const AppContainer = styled.View`
-  padding-top: 24px;
+  padding-top: 64px;
   background-color: ${({ backgroundColor }) => backgroundColor};
   flex: 1;
   height: 100%;
@@ -36,7 +35,7 @@ const AppContainer = styled.View`
   justify-content: center;
 `;
 
-const CourtContainer = styled(SafeAreaView)`
+const CourtContainer = styled.View`
   position: absolute;
   width: 100%;
   height: 100%;
