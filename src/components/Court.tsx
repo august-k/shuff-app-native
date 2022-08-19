@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-import styled, { CSSProperties } from "styled-components";
-import { Dimensions } from "react-native";
-import Svg, { Circle, G, Path, Polygon } from "react-native-svg";
+import { CSSProperties } from "styled-components";
+import Svg, { G, Path, Polygon } from "react-native-svg";
 
 type Props = {
   fill?: CSSProperties["fill"];
