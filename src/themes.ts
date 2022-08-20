@@ -6,8 +6,9 @@ export type Theme = {
   board: CSSProperties["color"];
   court: CSSProperties["color"];
   border: CSSProperties["color"];
-  navigation?: CSSProperties["color"];
   contrastText?: CSSProperties["color"];
+  biscuitColorLeft?: CSSProperties["color"];
+  biscuitColorRight?: CSSProperties["color"];
 };
 
 export const blue: Theme = {
@@ -17,6 +18,8 @@ export const blue: Theme = {
   court: "#22d3ee", // cyan 400
   border: "#164e63", // cyan 900
   contrastText: "black",
+  biscuitColorLeft: "gold",
+  biscuitColorRight: "black",
 };
 
 export const green: Theme = {
@@ -25,8 +28,9 @@ export const green: Theme = {
   board: "#d1fae5", // emerald 100
   court: "#34d399", // emerald 400
   border: "#064e3b", // emerald 900
-  navigation: "#064e3b", // emerald 900
   contrastText: "black",
+  biscuitColorLeft: "gold",
+  biscuitColorRight: "black",
 };
 
 export const orange: Theme = {
@@ -36,6 +40,8 @@ export const orange: Theme = {
   court: "#fdba74", // orange 300
   border: "black",
   contrastText: "black",
+  biscuitColorLeft: "gold",
+  biscuitColorRight: "black",
 };
 
 export const amber: Theme = {
@@ -45,4 +51,6 @@ export const amber: Theme = {
   court: "#78350f", // amber 900
   border: "#fffbeb", // amber 50
   contrastText: "white",
+  biscuitColorLeft: "gold",
+  biscuitColorRight: "black",
 };

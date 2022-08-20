@@ -1,7 +1,7 @@
 import * as Linking from "expo-linking";
 import styled, { CSSProperties } from "styled-components/native";
 
-enum CONTRAST_INVERSE {
+export enum CONTRAST_TEXT_INVERSE {
   black = "white",
   white = "black",
 }
@@ -20,7 +20,7 @@ const CommunityLink: React.FC<Props> = ({ backgroundColor, contrastText }) => (
       )
     }
   >
-    <DiscordButtonText color={CONTRAST_INVERSE[contrastText]}>
+    <DiscordButtonText color={CONTRAST_TEXT_INVERSE[contrastText]}>
       Join the Community
     </DiscordButtonText>
   </DiscordButton>

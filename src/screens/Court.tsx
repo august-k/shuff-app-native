@@ -3,12 +3,17 @@ import styled from "styled-components/native";
 import { Court as CourtComponent } from "../components";
 
 const Court = ({ navigation, theme }) => {
-  const { board, border, court } = theme;
+  const { board, border, court, biscuitColorLeft, biscuitColorRight } = theme;
 
   return (
     <AppContainer backgroundColor={court}>
       <CourtContainer>
-        <CourtComponent fill={board} stroke={border} />
+        <CourtComponent
+          fill={board}
+          stroke={border}
+          biscuitColorLeft={biscuitColorLeft}
+          biscuitColorRight={biscuitColorRight}
+        />
       </CourtContainer>
       <NavContainer>
         <NavIcon

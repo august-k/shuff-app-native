@@ -1,12 +1,21 @@
 import { CSSProperties } from "styled-components";
 import Svg, { G, Path, Polygon } from "react-native-svg";
+import type { Theme } from "../themes";
+import { rgba } from "polished";
 
 type Props = {
   fill?: CSSProperties["fill"];
   stroke?: CSSProperties["stroke"];
+  biscuitColorLeft: Theme["biscuitColorLeft"];
+  biscuitColorRight: Theme["biscuitColorRight"];
 };
 
-const Court: React.FC<Props> = ({ fill = "green", stroke = "gold" }) => {
+const Court: React.FC<Props> = ({
+  fill,
+  stroke,
+  biscuitColorLeft,
+  biscuitColorRight,
+}) => {
   /**
    * We have an "invisible biscuit" circle in the court SVG,
    * it's dimensions scale with the size of the court.
@@ -29,13 +38,27 @@ const Court: React.FC<Props> = ({ fill = "green", stroke = "gold" }) => {
       stroke={stroke}
     >
       {/* <Circle cx="-50" cy="-50" r="3" className="invisible-biscuit" /> */}
+      <G id="Biscuit_Colors">
+        <Polygon
+          id="Biscuit_Color_Right"
+          points="66.5,18.5 67.6,14.5 70,18.5 "
+          fill={rgba(biscuitColorRight, 0.8)}
+          stroke="transparent"
+        />
+        <Polygon
+          id="Biscuit_Color_Left"
+          points="4.4,14.5 2,18.5 5.5,18.5 "
+          fill={rgba(biscuitColorLeft, 0.8)}
+          stroke="transparent"
+        />
+      </G>
       <G id="court">
         <G id="Background_Scoring_Area">
           <Polygon
             id="Kitchen"
             fill={fill}
             stroke="transparent"
-            points="1.43,1.01 70.71,0.99 66.11,18 6.87,18 	"
+            points="1.4,1 70.7,1 66.1,18 5.4,18 	"
           />
           <Polygon
             id="Top_10_Border"
@@ -196,8 +219,8 @@ const Court: React.FC<Props> = ({ fill = "green", stroke = "gold" }) => {
         </G>
         <Path
           id="Board_Lines"
-          d="M6.5,18.5l-5.76-18h70.63l-4.87,18 M6.5,18.5H0.75L36,124.42L71.23,18.47L66.5,18.5H6.5z
-	 M36,18.5v72 M12.73,54.5h46.52 M24.5,90.5h22.75"
+          d="M5.5,18.5l-4.7-18h70.6l-4.9,18 M6.5,18.5H0.8L36,124.4L71.2,18.5l-4.7,0H6.5z M36,18.5v72
+	 M12.7,54.5h46.5 M24.5,90.5h22.8"
         />
       </G>
     </Svg>
