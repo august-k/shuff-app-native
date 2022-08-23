@@ -12,7 +12,6 @@ const Drawer = createDrawerNavigator();
 
 const App = () => {
   const [activeTheme, setActiveTheme] = useState(themes.blue);
-
   const themeSettings = {
     activeTheme: activeTheme,
     setActiveTheme,
