@@ -27,7 +27,6 @@ const ThemePicker: React.FC<Props> = ({ theme }) => {
   const { board, border, contrastText } = theme;
 
   const _renderHeader = (section, _, isActive) => (
-    /** @todo convert to Button primitive */
     <DropdownTitle
       backgroundColor={lighten(0.05, border)}
       textColor={contrastText}

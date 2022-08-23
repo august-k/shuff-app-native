@@ -46,7 +46,7 @@ const StyledButton = styled.Pressable`
 
 export const StaticButtonTextStyles = css`
   font-weight: bold;
-  font-size: 12px;
+  font-size: 13px;
 `;
 
 const StyledButtonText = styled.Text`

@@ -22,7 +22,7 @@ const DropdownTitle: React.FC<Props> = ({
     <Title textColor={textColor}>{text}</Title>
     <Icon
       name="chevron-down"
-      size={18}
+      size={13}
       color={textColor}
       isActive={!isActive}
     />
@@ -50,6 +50,7 @@ const Title = styled.Text`
 `;
 
 const Icon = styled(Ionicons)`
+  height: ${({ size }) => size + "px"};
   transform: ${({ isActive }) =>
     isActive ? `rotate(0deg)` : `rotate(180deg)`};
 `;
