@@ -1,11 +1,7 @@
 import { lighten } from "polished";
 import styled, { CSSProperties } from "styled-components/native";
 import type { Theme } from "../../themes";
-
-export enum CONTRAST_TEXT_INVERSE {
-  black = "white",
-  white = "black",
-}
+import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
 type BoxProps = {
   theme: GameDetailsProps["theme"];
@@ -19,13 +15,13 @@ const Box: React.FC<BoxProps> = ({ theme, title, value, styledMargin }) => {
 
   return (
     <StyledBox styledMargin={styledMargin}>
-      <Title
-        backgroundColor={border}
-        textColor={CONTRAST_TEXT_INVERSE[contrastText]}
-      >
+      <Title backgroundColor={border} textColor={contrastText}>
         {title}
       </Title>
-      <Value textColor={contrastText} backgroundColor={lighten(0.15, board)}>
+      <Value
+        textColor={CONTRAST_TEXT_INVERSE[contrastText]}
+        backgroundColor={lighten(0.15, board)}
+      >
         {value}
       </Value>
     </StyledBox>

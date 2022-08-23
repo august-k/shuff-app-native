@@ -1,7 +1,8 @@
 import { lighten } from "polished";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import type { Theme } from "../../themes";
+import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
 import GameDetails from "./GameDetails";
 import ThemePicker from "./ThemePicker";
@@ -26,11 +27,12 @@ const Sidebar: React.FC<Props> = ({ theme }) => {
       <SafeAreaView>
         <GameDetails theme={theme} />
         <ThemePicker theme={theme} />
+        <View style={{ marginBottom: 16 }} />
         <CommunityLinks
           backgroundColor={lighten(0.05, border)}
-          contrastText={contrastText}
+          textColor={contrastText}
         />
-        <Credits textColor={contrastText} />
+        <Credits textColor={CONTRAST_TEXT_INVERSE[contrastText]} />
       </SafeAreaView>
     </ScrollView>
   );

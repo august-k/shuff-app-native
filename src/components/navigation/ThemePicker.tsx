@@ -8,6 +8,7 @@ import DropdownLinksContainer from "./DropdownLinksContainer";
 import DropdownLink from "./DropdownLink";
 import DropdownTitle from "./DropdownTitle";
 import ShadowBar from "./ShadowBar";
+import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
 type Props = {
   theme?: Theme;
@@ -23,13 +24,14 @@ const NAV_ITEMS = [
 const ThemePicker: React.FC<Props> = ({ theme }) => {
   const globals = useContext(AppContext);
   const [state, setState] = useState({ activeSections: [] });
-  const { board, contrastText } = theme;
+  const { board, border, contrastText } = theme;
 
   const _renderHeader = (section, _, isActive) => (
+    /** @todo convert to Button primitive */
     <DropdownTitle
-      backgroundColor={lighten(0.05, board)}
-      text={section.title}
+      backgroundColor={lighten(0.05, border)}
       textColor={contrastText}
+      text={section.title}
       isActive={isActive}
     />
   );
@@ -38,14 +40,14 @@ const ThemePicker: React.FC<Props> = ({ theme }) => {
     return (
       <DropdownLinksContainer backgroundColor={lighten(0.15, board)}>
         <ShadowBar backgroundColor={lighten(0.15, board)} />
-        {section.data.map((item, i) => {
+        {section.data.map((item: string, i: number) => {
           const theme = themes[item];
           return (
             <DropdownLink
               backgroundColor={lighten(0.15, board)}
               emoji={theme.emoji}
               text={theme.location}
-              textColor={contrastText}
+              textColor={CONTRAST_TEXT_INVERSE[contrastText]}
               key={i}
               onPress={() => globals.setActiveTheme(theme)}
             />

@@ -9,6 +9,7 @@ type Props = {
   onPress?: () => void;
 };
 
+/** @todo add active state */
 const DropdownLink: React.FC<Props> = ({ text, emoji, textColor, onPress }) => (
   <LinkContainer onPress={onPress}>
     <Title color={textColor}>{text}</Title>
