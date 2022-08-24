@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 type DiscProps = {
   size: number;
-  body: {
+  body?: {
     position: {
       x: number;
       y: number;
@@ -11,6 +11,10 @@ type DiscProps = {
   color: string;
 };
 
+/**
+ * @todo style disc to look more realistic
+ * @see https://www.npmjs.com/package/react-native-inset-shadow
+ * */
 const Disc: React.FC<DiscProps> = ({
   size = 16,
   body = { position: { x: 0, y: 0 } },
@@ -21,12 +25,15 @@ const Disc: React.FC<DiscProps> = ({
 
   return (
     <StyledDisc
+      // source={require("../assets/disc-overlay.png")}
+      // resizeMode="cover"
       backgroundColor={color}
       style={{
         left: x,
         top: y,
         width: size,
         height: size,
+        borderRadius: size / 2,
       }}
     />
   );
@@ -36,7 +43,6 @@ export default Disc;
 
 const StyledDisc = styled.View`
   position: absolute;
-  border-radius: 50%;
   background-color: ${({ backgroundColor }) => backgroundColor};
   box-shadow: rgba(0, 0, 0, 0.44) 0px 2px 2px;
 `;

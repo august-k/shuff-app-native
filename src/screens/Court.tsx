@@ -1,11 +1,25 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Matter from "matter-js";
+// import Matter from "matter-js";
+import { useState } from "react";
 import { Dimensions } from "react-native";
-import { GameEngine } from "react-native-game-engine";
+import { GameEngine, GameLoop } from "react-native-game-engine";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
-import { Disc, Court as CourtComponent } from "../components";
+import { Disc, Court as CourtComponent, NavIcon } from "../components";
 import type { CourtProps } from "../components/Court";
+
+const { width, height } = Dimensions.get("screen");
+const discSize = Math.trunc(Math.max(width) / 12);
+// const discCategory = 0x0001;
+// const disc = Matter.Bodies.circle(width / 2, height / 2, discSize, {
+//   restitution: 1,
+//   friction: 0.3,
+//   collisionFilter: { category: discCategory },
+// });
+// const court = Matter.Bodies.rectangle(0, 0, width, height, { isStatic: true });
+// const engine = Matter.Engine.create({ enableSleeping: false, isSensor: true });
+// const world = engine.world;
+
+// Matter.World.add(world, [disc, court]);
 
 /**
  * @see https://brm.io/matter-js/
@@ -16,73 +30,75 @@ import type { CourtProps } from "../components/Court";
  */
 const Court = ({ navigation, theme }) => {
   const { board, border, court, biscuitColorLeft, biscuitColorRight } = theme;
+  const [discPosition, setDiscPosition] = useState({
+    x: width / 2,
+    y: height / 2,
+  });
 
-  const { width, height } = Dimensions.get("screen");
-  const discSize = Math.trunc(Math.max(width) / 12);
-  const initialDisc = Matter.Bodies.circle(width / 2, height / 2, discSize);
+  // const Physics = (entities, { time }) => {
+  //   let engine = entities["physics"].engine;
+  //   Matter.Engine.update(engine, time.delta);
+  //   return entities;
+  // };
+
+  const _onUpdate = ({ touches }) => {
+    let move = touches.find((x) => x.type === "move");
+    if (move) {
+      setDiscPosition({
+        x: discPosition.x + move.delta.pageX,
+        y: discPosition.y + move.delta.pageY,
+      });
+    }
+  };
 
   return (
     <GameEngine
       style={{ flex: 1, backgroundColor: court }}
       entities={{
+        // physics: {
+        //   engine: engine,
+        //   world: world,
+        // },
         court: {
+          body: court,
           fill: board,
           stroke: border,
           biscuitColorLeft: biscuitColorLeft,
           biscuitColorRight: biscuitColorRight,
-          renderer: (props) => <CourtBackground {...props} />,
+          renderer: (props) => (
+            <SafeAreaView
+              style={{
+                position: "absolute",
+                width: width,
+                height: height,
+              }}
+            >
+              <CourtComponent {...props} />
+            </SafeAreaView>
+          ),
         },
-        initialDisc: {
-          body: initialDisc,
-          size: discSize,
-          color: biscuitColorLeft,
-          renderer: Disc,
-        },
+        // disc0: {
+        //   body: disc,
+        //   size: discSize,
+        //   color: biscuitColorLeft,
+        //   renderer: Disc,
+        // },
       }}
     >
-      <NavContainer>
-        <NavIcon
-          name="menu-sharp"
-          size={24}
-          color={border}
-          backgroundColor={board}
-          onPress={() => navigation.openDrawer()}
+      <GameLoop onUpdate={_onUpdate}>
+        <Disc
+          body={{ position: { x: discPosition.x, y: discPosition.y } }}
+          size={discSize}
+          color={biscuitColorLeft}
         />
-      </NavContainer>
+      </GameLoop>
+      <NavIcon
+        color={border}
+        backgroundColor={board}
+        onPress={() => navigation.openDrawer()}
+      />
     </GameEngine>
   );
 };
 
-type CourtBackgroundProps = CourtProps & {
-  onLayout: (e: any) => void;
-};
-
-const CourtBackground: React.FC<CourtBackgroundProps> = ({
-  onLayout,
-  ...props
-}) => (
-  <CourtContainer onLayout={onLayout}>
-    <CourtComponent {...props} />
-  </CourtContainer>
-);
-
 export default Court;
-
-const CourtContainer = styled(SafeAreaView)`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
-const NavContainer = styled.View`
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-`;
-
-const NavIcon = styled(Ionicons.Button)`
-  padding: 8px 2px 8px 12px;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-`;
