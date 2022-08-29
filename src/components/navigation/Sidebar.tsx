@@ -25,7 +25,7 @@ const Sidebar: React.FC<Props> = ({ theme }) => {
       }}
     >
       <SafeAreaView>
-        <GameDetails theme={theme} />
+        {/* <GameDetails theme={theme} /> */}
         <ThemePicker theme={theme} />
         <View style={{ marginBottom: 16 }} />
         <CommunityLinks

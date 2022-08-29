@@ -1,11 +1,11 @@
 // import Matter from "matter-js";
-import { useState } from "react";
-import { Dimensions } from "react-native";
+import { useEffect, useState } from "react";
+import { Dimensions, Pressable } from "react-native";
 import { GameEngine, GameLoop } from "react-native-game-engine";
 import { SafeAreaView } from "react-native-safe-area-context";
-import styled from "styled-components/native";
+// import styled from "styled-components/native";
 import { Disc, Court as CourtComponent, NavIcon } from "../components";
-import type { CourtProps } from "../components/Court";
+// import type { CourtProps } from "../components/Court";
 
 const { width, height } = Dimensions.get("screen");
 const discSize = Math.trunc(Math.max(width) / 12);
@@ -30,6 +30,7 @@ const discSize = Math.trunc(Math.max(width) / 12);
  */
 const Court = ({ navigation, theme }) => {
   const { board, border, court, biscuitColorLeft, biscuitColorRight } = theme;
+  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const [discPosition, setDiscPosition] = useState({
     x: width / 2,
     y: height / 2,
@@ -43,10 +44,29 @@ const Court = ({ navigation, theme }) => {
 
   const _onUpdate = ({ touches }) => {
     let move = touches.find((x) => x.type === "move");
+
+    const { x: discX, y: discY } = discPosition;
+    const { x: touchX, y: touchY } = touchPosition;
+
+    const touchBoundaryThreshold = 25;
+    const touchBoundaryX =
+      touchX >= discX - touchBoundaryThreshold &&
+      touchX <= discX + touchBoundaryThreshold;
+    const touchBoundaryY =
+      touchY >= discY - touchBoundaryThreshold &&
+      touchY <= discY + touchBoundaryThreshold;
+
     if (move) {
+      setTouchPosition({
+        x: move.event.pageX,
+        y: move.event.pageY,
+      });
+    }
+
+    if (move && touchBoundaryX && touchBoundaryY) {
       setDiscPosition({
-        x: discPosition.x + move.delta.pageX,
-        y: discPosition.y + move.delta.pageY,
+        x: discX + move.delta.pageX,
+        y: discY + move.delta.pageY,
       });
     }
   };
