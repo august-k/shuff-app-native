@@ -9,6 +9,7 @@ type DiscProps = {
     };
   };
   color: string;
+  isActive?: boolean;
 };
 
 /**
@@ -19,6 +20,7 @@ const Disc: React.FC<DiscProps> = ({
   size = 16,
   body = { position: { x: 0, y: 0 } },
   color = "gold",
+  isActive = false,
 }) => {
   const x = body.position.x - size / 2;
   const y = body.position.y - size / 2;
@@ -31,9 +33,9 @@ const Disc: React.FC<DiscProps> = ({
       style={{
         left: x,
         top: y,
-        width: size,
-        height: size,
-        borderRadius: size / 2,
+        width: !isActive ? size : size * 2,
+        height: !isActive ? size : size * 2,
+        borderRadius: !isActive ? size / 2 : (size * 2) / 2,
       }}
     />
   );
