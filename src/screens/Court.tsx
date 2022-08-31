@@ -1,25 +1,37 @@
-// import Matter from "matter-js";
-import { useEffect, useState } from "react";
-import { Dimensions, Pressable } from "react-native";
-import { GameEngine, GameLoop } from "react-native-game-engine";
+import Matter from "matter-js";
+import { useState } from "react";
+import { Dimensions } from "react-native";
+import { GameEngine } from "react-native-game-engine";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import styled from "styled-components/native";
 import { Disc, Court as CourtComponent, NavIcon } from "../components";
-// import type { CourtProps } from "../components/Court";
 
 const { width, height } = Dimensions.get("screen");
-const discSize = Math.trunc(Math.max(width) / 12);
-// const discCategory = 0x0001;
-// const disc = Matter.Bodies.circle(width / 2, height / 2, discSize, {
-//   restitution: 1,
-//   friction: 0.3,
-//   collisionFilter: { category: discCategory },
-// });
-// const court = Matter.Bodies.rectangle(0, 0, width, height, { isStatic: true });
-// const engine = Matter.Engine.create({ enableSleeping: false, isSensor: true });
-// const world = engine.world;
 
-// Matter.World.add(world, [disc, court]);
+const STARTING_POSITIONS = {
+  disc0: { x: width / 2, y: height / 2 },
+};
+
+const discSize = Math.trunc(Math.max(width) / 12);
+const disc0 = Matter.Bodies.circle(
+  STARTING_POSITIONS.disc0.x,
+  STARTING_POSITIONS.disc0.y,
+  discSize,
+  {
+    restitution: 1,
+    friction: 0.15,
+    collisionFilter: { category: 0x0001 },
+  }
+);
+const court = Matter.Bodies.rectangle(-width / 2, -height / 2, width, height, {
+  isStatic: true,
+});
+const engine = Matter.Engine.create({ enableSleeping: false, isSensor: true });
+const world = engine.world;
+
+/** make gravity overhead */
+engine.world.gravity.y = 0;
+
+Matter.World.add(world, [disc0, court]);
 
 /**
  * @see https://brm.io/matter-js/
@@ -30,104 +42,82 @@ const discSize = Math.trunc(Math.max(width) / 12);
  */
 const Court = ({ navigation, theme }) => {
   const { board, border, court, biscuitColorLeft, biscuitColorRight } = theme;
-  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const [discPosition, setDiscPosition] = useState({
-    x: width / 2,
-    y: height / 2,
+    x: STARTING_POSITIONS.disc0.x,
+    y: STARTING_POSITIONS.disc0.y,
   });
-  const [discIsActive, setDiscIsActive] = useState(false);
 
-  // const Physics = (entities, { time }) => {
-  //   let engine = entities["physics"].engine;
-  //   Matter.Engine.update(engine, time.delta);
-  //   return entities;
-  // };
+  const MoveDisc = (entities, { touches, time }) => {
+    touches
+      .filter((t) => t.type === "move")
+      .forEach((t) => {
+        setDiscPosition({
+          x: t.event.pageX + t.delta.pageX,
+          y: t.event.pageY + t.delta.pageY,
+        });
+        Matter.Body.setPosition(disc0, {
+          x: discPosition.x,
+          y: discPosition.y,
+        });
+      });
+    Matter.Body.set(disc0, "size");
+    Matter.Engine.update(engine, time.delta);
 
-  const _onUpdate = ({ touches }) => {
-    let move = touches.find((x) => x.type === "move");
+    return entities;
+  };
 
-    const { x: discX, y: discY } = discPosition;
-    const { x: touchX, y: touchY } = touchPosition;
-    const touchBoundaryThreshold = 25;
-    const touchBoundaryX =
-      touchX >= discX - touchBoundaryThreshold &&
-      touchX <= discX + touchBoundaryThreshold;
-    const touchBoundaryY =
-      touchY >= discY - touchBoundaryThreshold &&
-      touchY <= discY + touchBoundaryThreshold;
-
-    if (move) {
-      // setDiscIsActive(true);
-      setTouchPosition({
-        x: move.event.pageX,
-        y: move.event.pageY,
+  const EndTouch = (entities, { touches, time }) => {
+    touches
+      .filter((t) => t.type === "end")
+      .forEach((t) => {
+        // console.log("end touch", t);
+        // Matter.Body.applyForce(
+        //   disc0,
+        //   { x: 0, y: 0 },
+        //   { x: 0.01, y: 0.01 }
+        // );
       });
 
-      // if (discIsActive)
-    }
+    Matter.Engine.update(engine, time.delta);
 
-    if (move && touchBoundaryX && touchBoundaryY) {
-      setDiscPosition({
-        x: discX + move.delta.pageX,
-        y: discY + move.delta.pageY,
-      });
-    }
+    return entities;
   };
 
   return (
-    <Pressable
+    <GameEngine
       style={{ flex: 1, backgroundColor: court }}
-      onPressIn={() => setDiscIsActive(true)}
-      onPressOut={() => setDiscIsActive(false)}
+      systems={[MoveDisc, EndTouch]}
+      entities={{
+        physics: {
+          engine: engine,
+          world: world,
+        },
+        court: {
+          body: court,
+          fill: board,
+          stroke: border,
+          biscuitColorLeft: biscuitColorLeft,
+          biscuitColorRight: biscuitColorRight,
+          renderer: (props) => (
+            <SafeAreaView>
+              <CourtComponent {...props} backgroundColor="gold" />
+            </SafeAreaView>
+          ),
+        },
+        disc0: {
+          body: disc0,
+          size: discSize,
+          color: biscuitColorLeft,
+          renderer: Disc,
+        },
+      }}
     >
-      <GameEngine
-        // style={{ flex: 1, backgroundColor: court }}
-        entities={{
-          // physics: {
-          //   engine: engine,
-          //   world: world,
-          // },
-          court: {
-            body: court,
-            fill: board,
-            stroke: border,
-            biscuitColorLeft: biscuitColorLeft,
-            biscuitColorRight: biscuitColorRight,
-            renderer: (props) => (
-              <SafeAreaView
-                style={{
-                  position: "absolute",
-                  width: width,
-                  height: height,
-                }}
-              >
-                <CourtComponent {...props} />
-              </SafeAreaView>
-            ),
-          },
-          // disc0: {
-          //   body: disc,
-          //   size: discSize,
-          //   color: biscuitColorLeft,
-          //   renderer: Disc,
-          // },
-        }}
-      >
-        <GameLoop onUpdate={_onUpdate}>
-          <Disc
-            body={{ position: { x: discPosition.x, y: discPosition.y } }}
-            size={discSize}
-            color={biscuitColorLeft}
-            isActive={discIsActive}
-          />
-        </GameLoop>
-        <NavIcon
-          color={border}
-          backgroundColor={board}
-          onPress={() => navigation.openDrawer()}
-        />
-      </GameEngine>
-    </Pressable>
+      <NavIcon
+        color={border}
+        backgroundColor={board}
+        onPress={() => navigation.openDrawer()}
+      />
+    </GameEngine>
   );
 };
 
