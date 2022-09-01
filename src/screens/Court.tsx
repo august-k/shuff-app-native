@@ -7,6 +7,7 @@ import {
   DISC_SIZE,
   DISC_FRICTION,
   DISC_RESTITUTION,
+  DISC_DENSITY,
   DISC_COLLISION_CATEGORY,
 } from "../constants";
 
@@ -44,6 +45,8 @@ const Court = ({ theme }) => {
   const disc = Matter.Bodies.circle(width / 2, height / 2, DISC_SIZE, {
     restitution: DISC_RESTITUTION,
     friction: DISC_FRICTION,
+    density: DISC_DENSITY,
+    mass: 50,
     collisionFilter: { category: DISC_COLLISION_CATEGORY },
   });
 
@@ -77,6 +80,7 @@ const Court = ({ theme }) => {
         disc: {
           body: disc,
           size: DISC_SIZE,
+          discColors: [biscuitColorLeft, biscuitColorRight],
           color: biscuitColorLeft,
           isActive: false,
           renderer: Disc,
