@@ -11,7 +11,6 @@ const MoveDisc = (entities, { touches }) => {
     let startPos: [any, any] = [start.event.pageX, start.event.pageY];
     let discId = Object.keys(entities).find((key) => {
       let body = entities[key].body;
-
       return (
         body &&
         distance([body.position.x, body.position.y], startPos) < DISC_SIZE
@@ -28,7 +27,6 @@ const MoveDisc = (entities, { touches }) => {
 
   let move = touches.find((t) => t.type === "move");
   if (move) {
-    console.log(move);
     constraint.pointA = { x: move.event.pageX, y: move.event.pageY };
   }
 

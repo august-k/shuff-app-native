@@ -3,6 +3,8 @@ import { Disc } from "../components";
 import {
   DISC_SIZE,
   DISC_FRICTION,
+  DISC_FRICTION_AIR,
+  DISC_FRICTION_STATIC,
   DISC_RESTITUTION,
   DISC_DENSITY,
   DISC_COLLISION_CATEGORY,
@@ -23,8 +25,10 @@ const CreateDisc = (entities, { touches, screen }) => {
       let disc = Bodies.circle(t.event.pageX, t.event.pageY, DISC_SIZE, {
         restitution: DISC_RESTITUTION,
         friction: DISC_FRICTION,
+        frictionAir: DISC_FRICTION_AIR,
+        frictionStatic: DISC_FRICTION_STATIC,
         density: DISC_DENSITY,
-        mass: 50,
+        inertia: 0,
         collisionFilter: { category: DISC_COLLISION_CATEGORY },
       });
       World.add(world, [disc]);

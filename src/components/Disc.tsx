@@ -35,7 +35,7 @@ const Disc: React.FC<DiscProps> = ({ size, body, color }) => {
 
 export default Disc;
 
-const StyledDisc = styled.Pressable`
+const StyledDisc = styled.View`
   position: absolute;
   box-shadow: rgba(0, 0, 0, 0.44) 0px 2px 2px;
   z-index: 2;

@@ -6,6 +6,8 @@ import { Physics, CreateDisc, MoveDisc, RemoveDisc } from "../systems";
 import {
   DISC_SIZE,
   DISC_FRICTION,
+  DISC_FRICTION_AIR,
+  DISC_FRICTION_STATIC,
   DISC_RESTITUTION,
   DISC_DENSITY,
   DISC_COLLISION_CATEGORY,
@@ -13,10 +15,11 @@ import {
 
 /**
  * @see https://brm.io/matter-js/
- * @see https://github.com/bberak/react-native-game-engine
+ * @see https://github.com/bberak/react-native-game-engine-handbook
  * @see https://codepen.io/colaru/pen/xxxqPNV
- * @see https://medium.com/@williamyang93/my-journey-with-react-native-game-engine-part-i-starting-the-project-bbebcd2ccf6
- * @see https://medium.com/@williamyang93/my-journey-with-react-native-game-engine-part-ii-adding-touch-and-bounce-b9ae3fac06b9
+ * @see https://github.com/niviso/react-native-pong
+ * @see https://pusher.com/tutorials/react-native-pong-game/
+ * @todo theme change resets the board state...
  */
 const Court = ({ theme }) => {
   const {
@@ -29,27 +32,27 @@ const Court = ({ theme }) => {
 
   const { width, height } = Dimensions.get("screen");
 
-  const engine = Matter.Engine.create({
-    enableSleeping: false,
-    isSensor: true,
-  });
+  const engine = Matter.Engine.create({ enableSleeping: false });
   const world = engine.world;
   const court = Matter.Bodies.rectangle(
-    -width / 2,
-    -height / 2,
-    width,
-    height,
+    -width,
+    -height,
+    width * 2,
+    height * 2,
     { isStatic: true }
   );
 
   const disc = Matter.Bodies.circle(width / 2, height / 2, DISC_SIZE, {
     restitution: DISC_RESTITUTION,
     friction: DISC_FRICTION,
+    frictionAir: DISC_FRICTION_AIR,
+    frictionStatic: DISC_FRICTION_STATIC,
     density: DISC_DENSITY,
-    mass: 50,
+    inertia: 0,
     collisionFilter: { category: DISC_COLLISION_CATEGORY },
   });
 
+  /** @todo wtf is constraint? */
   const constraint = Matter.Constraint.create({
     label: "Drag Constraint",
     pointA: { x: 0, y: 0 },
@@ -82,7 +85,6 @@ const Court = ({ theme }) => {
           size: DISC_SIZE,
           discColors: [biscuitColorLeft, biscuitColorRight],
           color: biscuitColorLeft,
-          isActive: false,
           renderer: Disc,
         },
       }}
