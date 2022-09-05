@@ -1,33 +1,33 @@
 import styled from "styled-components/native";
+import { useTheme } from "../../AppContext";
+import { DISC_SIZE } from "../constants";
 
 type DiscProps = {
-  size?: number;
   body?: {
     position: {
       x: number;
       y: number;
     };
   };
-  color?: string;
-  isActive?: boolean;
 };
 
 /**
  * @todo style disc to look more realistic
  * @see https://www.npmjs.com/package/react-native-inset-shadow
  * */
-const Disc: React.FC<DiscProps> = ({ size, body, color }) => {
-  const x = body.position.x - size / 2;
-  const y = body.position.y - size / 2;
+const Disc: React.FC<DiscProps> = ({ body }) => {
+  const { biscuitColorLeft, biscuitColorRight } = useTheme();
+  const x = body.position.x - DISC_SIZE / 2;
+  const y = body.position.y - DISC_SIZE / 2;
 
   return (
     <StyledDisc
       style={{
         top: y,
         left: x,
-        width: size,
-        height: size,
-        backgroundColor: color,
+        width: DISC_SIZE,
+        height: DISC_SIZE,
+        backgroundColor: biscuitColorLeft,
       }}
     />
   );

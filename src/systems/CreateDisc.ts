@@ -19,8 +19,8 @@ const CreateDisc = (entities, { touches, screen }) => {
   touches
     .filter((t) => t.type === "long-press")
     .forEach((t) => {
-      let activeColor =
-        t.event.pageX <= screen.width / 2 ? discColors[0] : discColors[1];
+      // let activeColor =
+      //   t.event.pageX <= screen.width / 2 ? discColors[0] : discColors[1];
 
       let disc = Bodies.circle(t.event.pageX, t.event.pageY, DISC_SIZE, {
         restitution: DISC_RESTITUTION,
@@ -35,8 +35,6 @@ const CreateDisc = (entities, { touches, screen }) => {
 
       entities[++discIds] = {
         body: disc,
-        size: DISC_SIZE,
-        color: activeColor,
         renderer: Disc,
       };
     });

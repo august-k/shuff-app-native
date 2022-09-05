@@ -1,7 +1,7 @@
 import { lighten } from "polished";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Accordion from "react-native-collapsible/Accordion";
-import AppContext from "../../../AppContext";
+import { useGlobalState } from "../../../AppContext";
 import * as themes from "../../themes";
 import type { Theme } from "../../themes";
 import DropdownLinksContainer from "./DropdownLinksContainer";
@@ -22,7 +22,7 @@ const NAV_ITEMS = [
 ];
 
 const ThemePicker: React.FC<Props> = ({ theme }) => {
-  const globals = useContext(AppContext);
+  const { dispatch } = useGlobalState();
   const [state, setState] = useState({ activeSections: [] });
   const { board, border, contrastText } = theme;
 
@@ -48,7 +48,7 @@ const ThemePicker: React.FC<Props> = ({ theme }) => {
               text={theme.location}
               textColor={CONTRAST_TEXT_INVERSE[contrastText]}
               key={i}
-              onPress={() => globals.setActiveTheme(theme)}
+              onPress={() => dispatch({ theme: theme })}
             />
           );
         })}

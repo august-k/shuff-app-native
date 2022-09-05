@@ -1,6 +1,7 @@
 import Matter from "matter-js";
 import { Dimensions } from "react-native";
 import { GameEngine } from "react-native-game-engine";
+import { useTheme } from "../../AppContext";
 import { Disc, Court as CourtComponent } from "../components";
 import { Physics, CreateDisc, MoveDisc, RemoveDisc } from "../systems";
 import {
@@ -19,28 +20,17 @@ import {
  * @see https://codepen.io/colaru/pen/xxxqPNV
  * @see https://github.com/niviso/react-native-pong
  * @see https://pusher.com/tutorials/react-native-pong-game/
- * @todo theme change resets the board state...
  */
-const Court = ({ theme }) => {
-  const {
-    board,
-    border,
-    court: courtTheme,
-    biscuitColorLeft,
-    biscuitColorRight,
-  } = theme;
+const Court = () => {
+  const { court: courtTheme } = useTheme();
 
   const { width, height } = Dimensions.get("screen");
 
   const engine = Matter.Engine.create({ enableSleeping: false });
   const world = engine.world;
-  const court = Matter.Bodies.rectangle(
-    -width,
-    -height,
-    width * 2,
-    height * 2,
-    { isStatic: true }
-  );
+  const court = Matter.Bodies.rectangle(-width, -height, width, height, {
+    isStatic: true,
+  });
 
   const disc = Matter.Bodies.circle(width / 2, height / 2, DISC_SIZE, {
     restitution: DISC_RESTITUTION,
@@ -54,7 +44,6 @@ const Court = ({ theme }) => {
 
   /** @todo wtf is constraint? */
   const constraint = Matter.Constraint.create({
-    label: "Drag Constraint",
     pointA: { x: 0, y: 0 },
     pointB: { x: 0, y: 0 },
     length: 0.0001,
@@ -72,21 +61,8 @@ const Court = ({ theme }) => {
       systems={[Physics, CreateDisc, MoveDisc, RemoveDisc]}
       entities={{
         physics: { engine: engine, world: world, constraint: constraint },
-        court: {
-          body: court,
-          fill: board,
-          stroke: border,
-          biscuitColorLeft: biscuitColorLeft,
-          biscuitColorRight: biscuitColorRight,
-          renderer: CourtComponent,
-        },
-        disc: {
-          body: disc,
-          size: DISC_SIZE,
-          discColors: [biscuitColorLeft, biscuitColorRight],
-          color: biscuitColorLeft,
-          renderer: Disc,
-        },
+        court: { body: court, renderer: CourtComponent },
+        disc: { body: disc, renderer: Disc },
       }}
     />
   );
