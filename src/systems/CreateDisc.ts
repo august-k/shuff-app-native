@@ -13,7 +13,7 @@ const CreateDisc = (entities, { touches, screen }) => {
 
       Matter.World.add(world, [disc]);
 
-      entities[++discIds] = {
+      entities[`disc_${++discIds}`] = {
         body: disc,
         side: activeSide,
         renderer: Disc,

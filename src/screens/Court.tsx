@@ -4,7 +4,7 @@ import { GameEngine } from "react-native-game-engine";
 import { useTheme } from "../../AppContext";
 import CourtComponent, { CourtBody } from "../components/Court";
 import Disc, { DiscBody } from "../components/Disc";
-import { Physics, CreateDisc, MoveDisc, RemoveDisc } from "../systems";
+import { Physics, CreateDisc, MoveDisc } from "../systems";
 
 /**
  * @see https://brm.io/matter-js/
@@ -25,24 +25,14 @@ const Court = () => {
   engine.world.gravity.y = 0;
   Matter.World.add(world, [disc, court]);
 
-  /** @todo wtf is constraint? */
-  const constraint = Matter.Constraint.create({
-    pointA: { x: 0, y: 0 },
-    pointB: { x: 0, y: 0 },
-    length: 0.0001,
-    stiffness: 0.1,
-    angularStiffness: 1,
-  });
-  Matter.World.addConstraint(world, constraint);
-
   return (
     <GameEngine
       style={{ flex: 1, backgroundColor: courtTheme }}
-      systems={[Physics, CreateDisc, MoveDisc, RemoveDisc]}
+      systems={[Physics, CreateDisc, MoveDisc]}
       entities={{
-        physics: { engine: engine, world: world, constraint: constraint },
+        physics: { engine: engine, world: world },
         court: { body: court, renderer: CourtComponent },
-        disc: { body: disc, renderer: Disc },
+        disc_0: { body: disc, renderer: Disc },
       }}
     />
   );
