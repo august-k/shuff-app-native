@@ -1,17 +1,15 @@
-import { lighten } from "polished";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 
-import { useGlobalState } from "../../../AppContext";
-import { CONTRAST_TEXT_INVERSE } from "../../utils";
+import { useTheme } from "../../../AppContext";
 
 import ThemePicker from "./ThemePicker";
 import CommunityLinks from "./CommunityLinks";
+import CaptureScreenshot from "./CaptureScreenshot";
 import Credits from "./Credits";
 
 const Sidebar: React.FC = () => {
-  const { state } = useGlobalState();
-  const { board, border, contrastText } = state.theme;
+  const { board } = useTheme();
 
   return (
     <ScrollView
@@ -23,13 +21,10 @@ const Sidebar: React.FC = () => {
     >
       <SafeAreaView>
         {/* <GameDetails theme={theme} /> */}
-        <ThemePicker theme={state.theme} />
-        <View style={{ marginBottom: 16 }} />
-        <CommunityLinks
-          backgroundColor={lighten(0.05, border)}
-          textColor={contrastText}
-        />
-        <Credits textColor={CONTRAST_TEXT_INVERSE[contrastText]} />
+        <ThemePicker />
+        <CaptureScreenshot />
+        <CommunityLinks />
+        <Credits />
       </SafeAreaView>
     </ScrollView>
   );

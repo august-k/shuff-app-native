@@ -14,20 +14,23 @@ import { Physics, CreateDisc, MoveDisc } from "../systems";
  * @see https://pusher.com/tutorials/react-native-pong-game/
  */
 const Court = () => {
-  const { court: courtTheme } = useTheme();
+  const { court: courtColor } = useTheme();
   const { width, height } = Dimensions.get("screen");
 
-  const engine = Matter.Engine.create({ enableSleeping: false });
+  const engine = Matter.Engine.create({
+    enableSleeping: false,
+    gravity: { x: 0, y: 0 },
+    speed: 1,
+  });
   const world = engine.world;
-  const court = CourtBody(-width, -height, width, height);
   const disc = DiscBody(width / 2, height / 2);
+  const court = CourtBody(-width, -height, width, height);
 
-  engine.world.gravity.y = 0;
   Matter.World.add(world, [disc, court]);
 
   return (
     <GameEngine
-      style={{ flex: 1, backgroundColor: courtTheme }}
+      style={{ flex: 1, backgroundColor: courtColor }}
       systems={[Physics, CreateDisc, MoveDisc]}
       entities={{
         physics: { engine: engine, world: world },

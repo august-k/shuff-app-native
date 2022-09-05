@@ -1,52 +1,38 @@
 import Matter from "matter-js";
 import styled from "styled-components/native";
 import { useTheme } from "../../AppContext";
-import {
-  DISC_SIZE,
-  DISC_RESTITUTION,
-  DISC_FRICTION_AIR,
-  DISC_COLLISION_CATEGORY,
-} from "../constants";
+import { DISC_OPTIONS } from "../constants";
 
 /** @todo do we need body prop? */
 type DiscProps = {
-  body?: {
-    position: {
-      x: number;
-      y: number;
-    };
-  };
+  body?: { position: { x: number; y: number } };
   side?: "left" | "right";
 };
 
+const { size, restitution, frictionAir, collisionCategory } = DISC_OPTIONS;
+
 export const DiscBody = (x: number, y: number) => {
-  return Matter.Bodies.circle(x, y, DISC_SIZE, {
-    restitution: DISC_RESTITUTION,
-    frictionAir: DISC_FRICTION_AIR,
-    collisionFilter: { category: DISC_COLLISION_CATEGORY },
+  return Matter.Bodies.circle(x, y, size, {
+    restitution: restitution,
+    frictionAir: frictionAir,
+    collisionFilter: { category: collisionCategory },
   });
 };
 
-/**
- * @todo style disc to look more realistic
- * @see https://www.npmjs.com/package/react-native-inset-shadow
- * */
 const Disc: React.FC<DiscProps> = ({ body, side = "left" }) => {
   const { biscuitColorLeft, biscuitColorRight } = useTheme();
-  const x = body.position.x - DISC_SIZE / 2;
-  const y = body.position.y - DISC_SIZE / 2;
+  const bgColor = side === "left" ? biscuitColorLeft : biscuitColorRight;
+  const x = body.position.x - size / 2;
+  const y = body.position.y - size / 2;
+  const styles = {
+    top: y,
+    left: x,
+    width: size,
+    height: size,
+    backgroundColor: bgColor,
+  };
 
-  return (
-    <StyledDisc
-      style={{
-        top: y,
-        left: x,
-        width: DISC_SIZE,
-        height: DISC_SIZE,
-        backgroundColor: side === "left" ? biscuitColorLeft : biscuitColorRight,
-      }}
-    />
-  );
+  return <StyledDisc style={styles} />;
 };
 
 export default Disc;

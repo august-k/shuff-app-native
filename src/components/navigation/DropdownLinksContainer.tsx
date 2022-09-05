@@ -1,17 +1,16 @@
 import styled, { CSSProperties } from "styled-components/native";
+import { lighten } from "polished";
+import { useTheme } from "../../../AppContext";
 
-type Props = {
-  backgroundColor: CSSProperties["backgroundColor"];
+const DropdownLinksContainer: React.FC = ({ children }) => {
+  const { board } = useTheme();
+
+  return (
+    <StyledDropdownLinksContainer backgroundColor={lighten(0.15, board)}>
+      {children}
+    </StyledDropdownLinksContainer>
+  );
 };
-
-const DropdownLinksContainer: React.FC<Props> = ({
-  backgroundColor,
-  children,
-}) => (
-  <StyledDropdownLinksContainer backgroundColor={backgroundColor}>
-    {children}
-  </StyledDropdownLinksContainer>
-);
 
 export default DropdownLinksContainer;
 

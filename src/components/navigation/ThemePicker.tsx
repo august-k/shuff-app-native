@@ -10,21 +10,12 @@ import DropdownTitle from "./DropdownTitle";
 import ShadowBar from "./ShadowBar";
 import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
-type Props = {
-  theme?: Theme;
-};
+const NAV_ITEMS = [{ title: "Select a Theme", data: Object.keys(themes) }];
 
-const NAV_ITEMS = [
-  {
-    title: "Select a Theme",
-    data: Object.keys(themes),
-  },
-];
-
-const ThemePicker: React.FC<Props> = ({ theme }) => {
-  const { dispatch } = useGlobalState();
+const ThemePicker: React.FC = () => {
+  const { state: globalState, dispatch } = useGlobalState();
   const [state, setState] = useState({ activeSections: [] });
-  const { board, border, contrastText } = theme;
+  const { board, border, contrastText } = globalState.theme;
 
   const _renderHeader = (section, _, isActive) => (
     <DropdownTitle
@@ -37,7 +28,7 @@ const ThemePicker: React.FC<Props> = ({ theme }) => {
 
   const _renderContent = (section) => {
     return (
-      <DropdownLinksContainer backgroundColor={lighten(0.15, board)}>
+      <DropdownLinksContainer>
         <ShadowBar backgroundColor={lighten(0.15, board)} />
         {section.data.map((item: string, i: number) => {
           const theme = themes[item];

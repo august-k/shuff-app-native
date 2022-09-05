@@ -1,9 +1,13 @@
 import Matter from "matter-js";
 import Disc, { DiscBody } from "../components/Disc";
+
 let discIds = 0;
 
+/**
+ * @todo disc is being created on navigation swipe
+ */
 const CreateDisc = (entities, { touches, screen }) => {
-  let world = entities["physics"].world;
+  let world = entities.physics.world;
 
   touches
     .filter((t) => t.type === "long-press")

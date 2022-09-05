@@ -5,6 +5,7 @@ type Props = {
   backgroundColor: CSSProperties["backgroundColor"];
   textColor: CSSProperties["color"];
   icon?: any;
+  style?: any;
   onPress?: (e: any) => void;
   children: string;
 };
@@ -13,10 +14,12 @@ const Button: React.FC<Props> = ({
   backgroundColor,
   textColor,
   icon,
+  style,
   onPress,
   children,
 }) => (
   <StyledButton
+    style={style}
     backgroundColor={backgroundColor}
     onPress={onPress}
     justifyContent={!icon ? "center" : "space-between"}

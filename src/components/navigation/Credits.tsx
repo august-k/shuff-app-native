@@ -1,21 +1,22 @@
 import styled, { CSSProperties } from "styled-components/native";
 import * as WebBrowser from "expo-web-browser";
+import { useTheme } from "../../../AppContext";
+import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
-type Props = {
-  textColor: CSSProperties["color"];
+const Credits: React.FC = () => {
+  const { contrastText } = useTheme();
+  return (
+    <Container
+      onPress={() => {
+        WebBrowser.openBrowserAsync("https://fratino.dev");
+      }}
+    >
+      <CreditsText textColor={CONTRAST_TEXT_INVERSE[contrastText]}>
+        Built with <Heart>♥</Heart> by Adam Fratino
+      </CreditsText>
+    </Container>
+  );
 };
-
-const Credits: React.FC<Props> = ({ textColor }) => (
-  <Container
-    onPress={() => {
-      WebBrowser.openBrowserAsync("https://fratino.dev");
-    }}
-  >
-    <CreditsText textColor={textColor}>
-      Built with <Heart>♥</Heart> by Adam Fratino
-    </CreditsText>
-  </Container>
-);
 
 export default Credits;
 

@@ -1,7 +1,7 @@
 import Matter from "matter-js";
+import { rgba } from "polished";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { G, Path, Polygon } from "react-native-svg";
-import { rgba } from "polished";
 import { useTheme } from "../../AppContext";
 
 export const CourtBody = (x: number, y: number, w: number, h: number) => {
@@ -27,15 +27,15 @@ const Court: React.FC = () => {
       >
         <G id="Biscuit_Colors">
           <Polygon
-            id="Biscuit_Color_Right"
-            points="66.5,18.5 67.6,14.5 70,18.5 "
-            fill={rgba(biscuitColorRight, 0.8)}
+            id="Biscuit_Color_Left"
+            points="3.9,12.3 0.1,18 5.5,18.2 "
+            fill={rgba(biscuitColorLeft, 0.8)}
             stroke="transparent"
           />
           <Polygon
-            id="Biscuit_Color_Left"
-            points="4.4,14.5 2,18.5 5.5,18.5 "
-            fill={rgba(biscuitColorLeft, 0.8)}
+            id="Biscuit_Color_Right"
+            points="66.5,18.2 71.9,18 68.1,12.3 "
+            fill={rgba(biscuitColorRight, 0.8)}
             stroke="transparent"
           />
         </G>
