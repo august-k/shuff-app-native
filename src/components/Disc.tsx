@@ -1,7 +1,14 @@
+import Matter from "matter-js";
 import styled from "styled-components/native";
 import { useTheme } from "../../AppContext";
-import { DISC_SIZE } from "../constants";
+import {
+  DISC_SIZE,
+  DISC_RESTITUTION,
+  DISC_FRICTION_AIR,
+  DISC_COLLISION_CATEGORY,
+} from "../constants";
 
+/** @todo do we need body prop? */
 type DiscProps = {
   body?: {
     position: {
@@ -10,6 +17,14 @@ type DiscProps = {
     };
   };
   side?: "left" | "right";
+};
+
+export const DiscBody = (x: number, y: number) => {
+  return Matter.Bodies.circle(x, y, DISC_SIZE, {
+    restitution: DISC_RESTITUTION,
+    frictionAir: DISC_FRICTION_AIR,
+    collisionFilter: { category: DISC_COLLISION_CATEGORY },
+  });
 };
 
 /**

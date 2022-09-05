@@ -1,25 +1,20 @@
+import Matter from "matter-js";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { G, Path, Polygon } from "react-native-svg";
-import { CSSProperties } from "styled-components";
-import type { Theme } from "../themes";
 import { rgba } from "polished";
-import { useGlobalState } from "../../AppContext";
+import { useTheme } from "../../AppContext";
 
-export type CourtProps = {
-  fill?: CSSProperties["fill"];
-  stroke?: CSSProperties["stroke"];
-  biscuitColorLeft?: Theme["biscuitColorLeft"];
-  biscuitColorRight?: Theme["biscuitColorRight"];
+export const CourtBody = (x: number, y: number, w: number, h: number) => {
+  return Matter.Bodies.rectangle(x, y, w, h, { isStatic: true });
 };
 
 const Court: React.FC = () => {
-  const { state } = useGlobalState();
   const {
     board: fill,
     border: stroke,
     biscuitColorLeft,
     biscuitColorRight,
-  } = state.theme;
+  } = useTheme();
 
   return (
     <SafeAreaView style={{ zIndex: 1 }}>

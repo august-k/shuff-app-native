@@ -4,7 +4,7 @@ const distance = ([x1, y1], [x2, y2]) =>
   Math.sqrt(Math.abs(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
 const MoveDisc = (entities, { touches }) => {
-  let constraint = entities["physics"].constraint;
+  let constraint = entities.physics.constraint;
 
   let start = touches.find((t) => t.type === "start");
   if (start) {
