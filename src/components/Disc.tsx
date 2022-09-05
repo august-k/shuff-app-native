@@ -9,13 +9,14 @@ type DiscProps = {
       y: number;
     };
   };
+  side?: "left" | "right";
 };
 
 /**
  * @todo style disc to look more realistic
  * @see https://www.npmjs.com/package/react-native-inset-shadow
  * */
-const Disc: React.FC<DiscProps> = ({ body }) => {
+const Disc: React.FC<DiscProps> = ({ body, side = "left" }) => {
   const { biscuitColorLeft, biscuitColorRight } = useTheme();
   const x = body.position.x - DISC_SIZE / 2;
   const y = body.position.y - DISC_SIZE / 2;
@@ -27,7 +28,7 @@ const Disc: React.FC<DiscProps> = ({ body }) => {
         left: x,
         width: DISC_SIZE,
         height: DISC_SIZE,
-        backgroundColor: biscuitColorLeft,
+        backgroundColor: side === "left" ? biscuitColorLeft : biscuitColorRight,
       }}
     />
   );
