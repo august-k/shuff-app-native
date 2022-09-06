@@ -1,6 +1,8 @@
 import Matter from "matter-js";
+import { forwardRef } from "react";
 import { Dimensions } from "react-native";
 import { GameEngine } from "react-native-game-engine";
+import ViewShot from "react-native-view-shot";
 import { useTheme } from "../../AppContext";
 import CourtComponent, { CourtBody } from "../components/Court";
 import Disc, { DiscBody } from "../components/Disc";
@@ -13,7 +15,7 @@ import { Physics, CreateDisc, MoveDisc } from "../systems";
  * @see https://github.com/niviso/react-native-pong
  * @see https://pusher.com/tutorials/react-native-pong-game/
  */
-const Court = () => {
+const Court = forwardRef<any, any>((props, ref) => {
   const { court: courtColor } = useTheme();
   const { width, height } = Dimensions.get("screen");
 
@@ -29,16 +31,22 @@ const Court = () => {
   Matter.World.add(world, [disc, court]);
 
   return (
-    <GameEngine
-      style={{ flex: 1, backgroundColor: courtColor }}
-      systems={[Physics, CreateDisc, MoveDisc]}
-      entities={{
-        physics: { engine: engine, world: world },
-        court: { body: court, renderer: CourtComponent },
-        disc_0: { body: disc, renderer: Disc },
-      }}
-    />
+    <ViewShot
+      ref={ref}
+      options={{ format: "jpg", quality: 1.0 }}
+      style={{ flex: 1 }}
+    >
+      <GameEngine
+        style={{ backgroundColor: courtColor }}
+        systems={[Physics, CreateDisc, MoveDisc]}
+        entities={{
+          physics: { engine: engine, world: world },
+          court: { body: court, renderer: CourtComponent },
+          disc_0: { body: disc, renderer: Disc },
+        }}
+      />
+    </ViewShot>
   );
-};
+});
 
 export default Court;

@@ -1,5 +1,6 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import { forwardRef } from "react";
 import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useTheme } from "../../../AppContext";
 
@@ -8,7 +9,7 @@ import CommunityLinks from "./CommunityLinks";
 import CaptureScreenshot from "./CaptureScreenshot";
 import Credits from "./Credits";
 
-const Sidebar: React.FC = () => {
+const Sidebar = forwardRef((props, ref) => {
   const { board } = useTheme();
 
   return (
@@ -22,12 +23,12 @@ const Sidebar: React.FC = () => {
       <SafeAreaView>
         {/* <GameDetails theme={theme} /> */}
         <ThemePicker />
-        <CaptureScreenshot />
+        <CaptureScreenshot ref={ref} />
         <CommunityLinks />
         <Credits />
       </SafeAreaView>
     </ScrollView>
   );
-};
+});
 
 export default Sidebar;

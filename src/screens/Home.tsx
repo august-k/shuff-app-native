@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { rgba } from "polished";
+import { useRef } from "react";
 import { Dimensions } from "react-native";
 import { useTheme } from "../../AppContext";
 import { Sidebar } from "../components";
@@ -11,6 +12,7 @@ const Drawer = createDrawerNavigator();
 
 const Home: React.FC = () => {
   const { border } = useTheme();
+  const courtRef = useRef();
 
   return (
     <NavigationContainer>
@@ -22,9 +24,9 @@ const Home: React.FC = () => {
           drawerPosition: "right",
           drawerStyle: { width: width * 0.9 },
         }}
-        drawerContent={() => <Sidebar />}
+        drawerContent={() => <Sidebar ref={courtRef} />}
       >
-        <Drawer.Screen name="Home" component={Court} />
+        <Drawer.Screen name="Home" children={() => <Court ref={courtRef} />} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
