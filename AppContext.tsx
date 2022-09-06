@@ -7,7 +7,7 @@ import type { Theme } from "./src/themes";
  * @see https://kentcdodds.com/blog/how-to-use-react-context-effectively
  * */
 
-type State = { theme: Theme };
+type State = { theme: Theme; showWatermark: boolean };
 type Dispatch = (action: any) => void;
 
 export const AppContext = createContext<
@@ -15,7 +15,11 @@ export const AppContext = createContext<
 >(undefined);
 
 const AppProvider = ({ children }) => {
-  const [state, dispatch] = useState({ theme: themes.blue });
+  /** @todo move global state defaults to constants */
+  const [state, dispatch] = useState({
+    theme: themes.blue,
+    showWatermark: false,
+  });
   const values = { state, dispatch };
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };

@@ -12,7 +12,7 @@ const Drawer = createDrawerNavigator();
 
 const Home: React.FC = () => {
   const { border } = useTheme();
-  const courtRef = useRef();
+  const courtRef = useRef(null);
 
   return (
     <NavigationContainer>

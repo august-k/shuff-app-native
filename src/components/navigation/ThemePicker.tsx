@@ -39,7 +39,7 @@ const ThemePicker: React.FC = () => {
               text={theme.location}
               textColor={CONTRAST_TEXT_INVERSE[contrastText]}
               key={i}
-              onPress={() => dispatch({ theme: theme })}
+              onPress={() => dispatch((prev) => ({ ...prev, theme: theme }))}
             />
           );
         })}

@@ -1,5 +1,6 @@
-import styled, { CSSProperties } from "styled-components/native";
+import styled from "styled-components/native";
 import * as WebBrowser from "expo-web-browser";
+import Heart from "../../primitives/Heart";
 import { useTheme } from "../../../AppContext";
 import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
@@ -12,7 +13,7 @@ const Credits: React.FC = () => {
       }}
     >
       <CreditsText textColor={CONTRAST_TEXT_INVERSE[contrastText]}>
-        Built with <Heart>♥</Heart> by Adam Fratino
+        Built with <Heart /> by Adam Fratino
       </CreditsText>
     </Container>
   );
@@ -33,8 +34,4 @@ const CreditsText = styled.Text`
   font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
-`;
-
-const Heart = styled.Text`
-  color: red;
 `;

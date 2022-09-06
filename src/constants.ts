@@ -1,9 +1,10 @@
 import { Dimensions } from "react-native";
 
-const { width } = Dimensions.get("screen");
+const { width: screenWidth } = Dimensions.get("screen");
+const width = Math.trunc(Math.max(screenWidth));
 
 export const DISC_OPTIONS = {
-  size: Math.trunc(Math.max(width) / 12),
+  size: width / 12,
   restitution: 1,
   friction: 0.5,
   frictionAir: 0.02,

@@ -1,11 +1,13 @@
+import { useDrawerStatus } from "@react-navigation/drawer";
 import Matter from "matter-js";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { Dimensions } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import ViewShot from "react-native-view-shot";
-import { useTheme } from "../../AppContext";
+import { useGlobalState } from "../../AppContext";
 import CourtComponent, { CourtBody } from "../components/Court";
 import Disc, { DiscBody } from "../components/Disc";
+import Watermark from "../components/Watermark";
 import { Physics, CreateDisc, MoveDisc } from "../systems";
 
 /**
@@ -16,8 +18,14 @@ import { Physics, CreateDisc, MoveDisc } from "../systems";
  * @see https://pusher.com/tutorials/react-native-pong-game/
  */
 const Court = forwardRef<any, any>((props, ref) => {
-  const { court: courtColor } = useTheme();
+  const { state, dispatch } = useGlobalState();
+  const { court: courtColor } = state.theme;
   const { width, height } = Dimensions.get("screen");
+  const isDrawerOpen = useDrawerStatus() === "open";
+
+  useEffect(() => {
+    dispatch((prev) => ({ ...prev, showWatermark: isDrawerOpen }));
+  }, [isDrawerOpen]);
 
   const engine = Matter.Engine.create({
     enableSleeping: false,
@@ -45,6 +53,7 @@ const Court = forwardRef<any, any>((props, ref) => {
           disc_0: { body: disc, renderer: Disc },
         }}
       />
+      {state.showWatermark && <Watermark />}
     </ViewShot>
   );
 });
