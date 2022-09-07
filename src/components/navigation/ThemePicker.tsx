@@ -3,7 +3,6 @@ import { useState } from "react";
 import Accordion from "react-native-collapsible/Accordion";
 import { useGlobalState } from "../../../AppContext";
 import * as themes from "../../themes";
-import type { Theme } from "../../themes";
 import DropdownLinksContainer from "./DropdownLinksContainer";
 import DropdownLink from "./DropdownLink";
 import DropdownTitle from "./DropdownTitle";

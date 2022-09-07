@@ -5,6 +5,7 @@ const width = Math.trunc(Math.max(screenWidth));
 
 export const DISC_OPTIONS = {
   size: width / 12,
+  maxSpeed: 3,
   restitution: 1,
   friction: 0.5,
   frictionAir: 0.02,

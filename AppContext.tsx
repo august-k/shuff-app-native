@@ -7,18 +7,35 @@ import type { Theme } from "./src/themes";
  * @see https://kentcdodds.com/blog/how-to-use-react-context-effectively
  * */
 
-type State = { theme: Theme; showWatermark: boolean };
+export type GlobalState = {
+  theme: Theme;
+  showWatermark: boolean;
+  isPhysicsActive: boolean;
+  gameDetails?: {
+    frame?: number;
+    shot?: number;
+    leftScore?: number;
+    rightScore?: number;
+  };
+};
 type Dispatch = (action: any) => void;
 
 export const AppContext = createContext<
-  { state: State; dispatch: Dispatch } | undefined
+  { state: GlobalState; dispatch: Dispatch } | undefined
 >(undefined);
 
 const AppProvider = ({ children }) => {
   /** @todo move global state defaults to constants */
   const [state, dispatch] = useState({
     theme: themes.blue,
-    showWatermark: false,
+    showWatermark: true,
+    isPhysicsActive: true,
+    gameDetails: {
+      frame: undefined,
+      shot: undefined,
+      leftScore: undefined,
+      rightScore: undefined,
+    },
   });
   const values = { state, dispatch };
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;

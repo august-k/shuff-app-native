@@ -5,7 +5,7 @@ let discIds = 0;
 
 /**
  * @todo disc is being created on navigation swipe
- */
+ * */
 const CreateDisc = (entities, { touches, screen }) => {
   let world = entities.physics.world;
 

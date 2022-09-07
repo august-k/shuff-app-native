@@ -1,49 +1,118 @@
 import { lighten } from "polished";
-import styled, { CSSProperties } from "styled-components/native";
-import type { Theme } from "../../themes";
+import { CSSProperties, useState } from "react";
+import Accordion from "react-native-collapsible/Accordion";
+import styled from "styled-components/native";
+import { useGlobalState, useTheme } from "../../../AppContext";
 import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
+import ShadowBar from "./ShadowBar";
+import DropdownLinksContainer from "./DropdownLinksContainer";
+import DropdownTitle from "./DropdownTitle";
+
 type BoxProps = {
-  theme: GameDetailsProps["theme"];
+  backgroundColor?: CSSProperties["backgroundColor"];
   title: string;
+  hideTitle?: boolean;
   value: number;
-  styledMargin?: CSSProperties["margin"];
 };
 
-const Box: React.FC<BoxProps> = ({ theme, title, value, styledMargin }) => {
-  const { board, border, contrastText } = theme;
+const Box: React.FC<BoxProps> = ({
+  backgroundColor,
+  title,
+  value,
+  hideTitle,
+}) => {
+  const { board, border, contrastText } = useTheme();
+  const { dispatch } = useGlobalState();
 
   return (
-    <StyledBox styledMargin={styledMargin}>
-      <Title backgroundColor={border} textColor={contrastText}>
-        {title}
+    <StyledBox>
+      <Title
+        backgroundColor={backgroundColor ?? border}
+        textColor={contrastText}
+      >
+        {!hideTitle && title}
       </Title>
       <Value
         textColor={CONTRAST_TEXT_INVERSE[contrastText]}
         backgroundColor={lighten(0.15, board)}
-      >
-        {value}
-      </Value>
+        onChangeText={(value) =>
+          dispatch((prev) => ({
+            ...prev,
+            gameDetails: {
+              ...prev.gameDetails,
+              [`${title}`]: +value,
+            },
+          }))
+        }
+        defaultValue={value && `${value}`}
+        keyboardType="number-pad"
+      />
     </StyledBox>
   );
 };
 
-type GameDetailsProps = {
-  theme: Theme;
-};
+const NAV_ITEMS = [{ title: "Show Match Details" }];
 
-const GameDetails: React.FC<GameDetailsProps> = ({ theme }) => (
-  <>
-    <GameDetailsContainer>
-      <Box title="Frame" value={7} theme={theme} styledMargin="0 4px 8px 0" />
-      <Box title="Shot" value={4} theme={theme} styledMargin="0 0 8px 4px" />
-    </GameDetailsContainer>
-    <GameDetailsContainer>
-      <Box title="Yellow" value={17} theme={theme} styledMargin="0 4px 8px 0" />
-      <Box title="Black" value={31} theme={theme} styledMargin="0 0 8px 4px" />
-    </GameDetailsContainer>
-  </>
-);
+const GameDetails: React.FC = () => {
+  const { board, border, contrastText, biscuitColorLeft, biscuitColorRight } =
+    useTheme();
+  const [state, setState] = useState({ activeSections: [] });
+  const { state: globalState } = useGlobalState();
+  const { gameDetails } = globalState;
+
+  const renderHeader = (section, _, isActive) => (
+    <DropdownTitle
+      backgroundColor={lighten(0.05, border)}
+      textColor={contrastText}
+      text={section.title}
+      isActive={isActive}
+    />
+  );
+
+  const renderContent = () => {
+    return (
+      <DropdownLinksContainer>
+        <ShadowBar backgroundColor={lighten(0.15, board)} />
+        <GameDetailsContainer>
+          <Box title="frame" value={gameDetails["frame"]} />
+          <Box title="shot" value={gameDetails["shot"]} />
+        </GameDetailsContainer>
+        <GameDetailsContainer>
+          <Box
+            title="leftScore"
+            hideTitle
+            value={gameDetails["leftScore"]}
+            backgroundColor={biscuitColorLeft}
+          />
+          <Box
+            title="rightScore"
+            hideTitle
+            value={gameDetails["rightScore"]}
+            backgroundColor={biscuitColorRight}
+          />
+        </GameDetailsContainer>
+      </DropdownLinksContainer>
+    );
+  };
+
+  const updateSections = (activeSections) => {
+    setState({ activeSections });
+  };
+
+  return (
+    <>
+      <Accordion
+        underlayColor="transparent"
+        sections={NAV_ITEMS}
+        activeSections={state.activeSections}
+        renderHeader={renderHeader}
+        renderContent={renderContent}
+        onChange={updateSections}
+      />
+    </>
+  );
+};
 
 export default GameDetails;
 
@@ -54,23 +123,26 @@ const GameDetailsContainer = styled.View`
 
 const StyledBox = styled.View`
   flex: 50%;
-  border: 1px solid black;
-  ${({ styledMargin }) => styledMargin && `margin: ${styledMargin}`};
-  box-sizing: border-box;
+  margin: 8px;
+  box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px;
 `;
+
 const Title = styled.Text`
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ textColor }) => textColor};
-  font-size: 16px;
+  font-size: 13px;
   font-weight: bold;
   text-align: center;
-  padding: 4px;
+  text-transform: uppercase;
+  padding: 8px 4px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
 `;
 
-const Value = styled.Text`
+const Value = styled.TextInput`
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ textColor }) => textColor};
-  font-size: 40px;
+  font-size: 28px;
   font-weight: bold;
   text-align: center;
+  padding: 8px;
 `;

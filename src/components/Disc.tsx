@@ -7,6 +7,7 @@ import { DISC_OPTIONS } from "../constants";
 type DiscProps = {
   body?: { position: { x: number; y: number } };
   side?: "left" | "right";
+  isActive?: boolean;
 };
 
 const { size, restitution, frictionAir, collisionCategory } = DISC_OPTIONS;
@@ -19,7 +20,7 @@ export const DiscBody = (x: number, y: number) => {
   });
 };
 
-const Disc: React.FC<DiscProps> = ({ body, side = "left" }) => {
+const Disc: React.FC<DiscProps> = ({ body, side = "left", isActive }) => {
   const { biscuitColorLeft, biscuitColorRight } = useTheme();
   const bgColor = side === "left" ? biscuitColorLeft : biscuitColorRight;
   const x = body.position.x - size / 2;
@@ -29,7 +30,7 @@ const Disc: React.FC<DiscProps> = ({ body, side = "left" }) => {
     left: x,
     width: size,
     height: size,
-    backgroundColor: bgColor,
+    backgroundColor: isActive ? "red" : bgColor,
   };
 
   return <StyledDisc style={styles} />;
