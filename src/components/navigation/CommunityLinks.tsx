@@ -1,9 +1,10 @@
 import * as Linking from "expo-linking";
 import { lighten } from "polished";
 import { Button } from "../../primitives";
+import { DISCORD_LINK } from "../../constants";
 import { useTheme } from "../../../AppContext";
 
-const CommunityLink: React.FC = () => {
+const CommunityLinks: React.FC = () => {
   const { border, contrastText } = useTheme();
 
   return (
@@ -11,15 +12,11 @@ const CommunityLink: React.FC = () => {
       style={{ marginTop: 16 }}
       backgroundColor={lighten(0.05, border)}
       textColor={contrastText}
-      onPress={() =>
-        Linking.openURL(
-          `https://discord.gg/.well-known/apple-app-site-association/invite/fBkg2nNYKH`
-        )
-      }
+      onPress={() => Linking.openURL(DISCORD_LINK)}
     >
       Join the Community
     </Button>
   );
 };
 
-export default CommunityLink;
+export default CommunityLinks;

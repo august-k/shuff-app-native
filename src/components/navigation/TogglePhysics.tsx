@@ -1,5 +1,5 @@
 import { lighten } from "polished";
-import React, { forwardRef } from "react";
+import React from "react";
 import { Button } from "../../primitives";
 import { GlobalState, useGlobalState } from "../../../AppContext";
 

@@ -4,9 +4,10 @@ import Accordion from "react-native-collapsible/Accordion";
 import styled from "styled-components/native";
 import { useGlobalState, useTheme } from "../../../AppContext";
 import { CONTRAST_TEXT_INVERSE } from "../../utils";
-import ShadowBar from "./ShadowBar";
-import DropdownLinksContainer from "./DropdownLinksContainer";
+import { Bold, Message } from "../../primitives";
 import DropdownTitle from "./DropdownTitle";
+import DropdownLinksContainer from "./DropdownLinksContainer";
+import ShadowBar from "./ShadowBar";
 
 type BoxProps = {
   backgroundColor?: CSSProperties["backgroundColor"];
@@ -159,14 +160,4 @@ const Value = styled.TextInput`
   font-weight: bold;
   text-align: center;
   text-align: center;
-`;
-
-const Message = styled.Text`
-  font-size: 11px;
-  padding: 4px 8px;
-  line-height: 15px;
-`;
-
-const Bold = styled.Text`
-  font-weight: bold;
 `;

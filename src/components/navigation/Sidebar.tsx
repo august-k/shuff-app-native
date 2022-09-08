@@ -1,9 +1,7 @@
 import { forwardRef } from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { useTheme } from "../../../AppContext";
-
 import GameDetails from "./GameDetails";
 import ThemePicker from "./ThemePicker";
 import CommunityLinks from "./CommunityLinks";

@@ -1,5 +1,5 @@
-import styled, { CSSProperties } from "styled-components/native";
 import { lighten } from "polished";
+import styled from "styled-components/native";
 import { useTheme } from "../../../AppContext";
 
 const DropdownLinksContainer: React.FC = ({ children }) => {
