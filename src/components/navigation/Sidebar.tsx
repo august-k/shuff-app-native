@@ -23,10 +23,10 @@ const Sidebar = forwardRef((props, ref) => {
       }}
     >
       <SafeAreaView>
-        <GameDetails />
         <ThemePicker />
-        {/* <TogglePhysics /> */}
+        <GameDetails />
         <CaptureScreenshot ref={ref} />
+        {/* <TogglePhysics /> */}
         <CommunityLinks />
         <Credits />
       </SafeAreaView>

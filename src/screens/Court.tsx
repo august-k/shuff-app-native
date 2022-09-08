@@ -9,12 +9,11 @@ import styled from "styled-components/native";
 import { useGlobalState } from "../../AppContext";
 import CourtComponent, { CourtBody } from "../components/Court";
 import Disc, { DiscBody } from "../components/Disc";
-import Watermark from "../components/Watermark";
+import Watermark from "../components/screenshot/Watermark";
+import GameDetails from "../components/screenshot/GameDetails";
 import { Physics, CreateDisc, MoveDisc } from "../systems";
 
 /**
- * @todo add Scoreboard Watermark titles
- *
  * @see https://brm.io/matter-js/
  * @see https://github.com/bberak/react-native-game-engine-handbook
  * @see https://codepen.io/colaru/pen/xxxqPNV
@@ -56,7 +55,7 @@ const Court = forwardRef<any, any>((props, ref) => {
     >
       <GameEngine
         style={{ backgroundColor: courtColor }}
-        systems={[CreateDisc, MoveDisc]}
+        systems={[Physics, CreateDisc, MoveDisc]}
         entities={{
           physics: { engine: engine, world: world },
           court: { body: court, renderer: CourtComponent },
@@ -68,49 +67,9 @@ const Court = forwardRef<any, any>((props, ref) => {
         (gameDetails["frame"] ||
           gameDetails["shot"] ||
           gameDetails["leftScore"] ||
-          gameDetails["rightScore"]) && (
-          <GameDetailsContainer backgroundColor={board}>
-            {Object.keys(gameDetails).map(
-              (detail, i) =>
-                gameDetails[`${detail}`] && (
-                  <DetailContainer
-                    backgroundColor={lighten(0.05, board)}
-                    key={i}
-                  >
-                    <Detail>{gameDetails[`${detail}`]}</Detail>
-                  </DetailContainer>
-                )
-            )}
-          </GameDetailsContainer>
-        )}
+          gameDetails["rightScore"]) && <GameDetails />}
     </ViewShot>
   );
 });
 
 export default Court;
-
-const GameDetailsContainer = styled.View`
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  padding: 4px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const DetailContainer = styled.View`
-  flex: 1;
-  border-radius: 4px;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px;
-  padding: 4px 0;
-  margin: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Detail = styled.Text`
-  font-size: 16px;
-`;

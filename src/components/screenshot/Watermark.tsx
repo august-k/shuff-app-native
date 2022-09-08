@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
-import Heart from "../primitives/Heart";
+import Heart from "../../primitives/Heart";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const FONT_SIZE = 8;
 
 const Watermark: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -9,7 +11,7 @@ const Watermark: React.FC = () => {
     <Container style={{ top: insets.top - 12 }}>
       <Text>https://shuff.app</Text>
       <Text>
-        <Heart size={9} /> by Adam Fratino
+        <Heart size={FONT_SIZE} /> by Adam Fratino
       </Text>
     </Container>
   );
@@ -30,7 +32,7 @@ const Container = styled.View`
 `;
 
 const Text = styled.Text`
-  font-size: 9px;
+  font-size: ${FONT_SIZE}px;
   letter-spacing: 1px;
   text-transform: uppercase;
 `;

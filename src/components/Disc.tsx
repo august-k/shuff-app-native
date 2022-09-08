@@ -12,7 +12,7 @@ type DiscProps = {
 
 const { size, restitution, frictionAir, collisionCategory } = DISC_OPTIONS;
 
-export const DiscBody = (x: number, y: number) => {
+export const DiscBody = (x: number, y: number, options?: {}) => {
   return Matter.Bodies.circle(x, y, size, {
     restitution: restitution,
     frictionAir: frictionAir,

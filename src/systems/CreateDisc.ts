@@ -21,6 +21,7 @@ const CreateDisc = (entities, { touches, screen }) => {
         body: disc,
         side: activeSide,
         renderer: Disc,
+        isStatic: true,
       };
     });
 

@@ -4,7 +4,6 @@ import Accordion from "react-native-collapsible/Accordion";
 import styled from "styled-components/native";
 import { useGlobalState, useTheme } from "../../../AppContext";
 import { CONTRAST_TEXT_INVERSE } from "../../utils";
-
 import ShadowBar from "./ShadowBar";
 import DropdownLinksContainer from "./DropdownLinksContainer";
 import DropdownTitle from "./DropdownTitle";
@@ -27,32 +26,30 @@ const Box: React.FC<BoxProps> = ({
 
   return (
     <StyledBox>
-      <Title
-        backgroundColor={backgroundColor ?? border}
-        textColor={contrastText}
-      >
-        {!hideTitle && title}
-      </Title>
-      <Value
-        textColor={CONTRAST_TEXT_INVERSE[contrastText]}
-        backgroundColor={lighten(0.15, board)}
-        onChangeText={(value) =>
-          dispatch((prev) => ({
-            ...prev,
-            gameDetails: {
-              ...prev.gameDetails,
-              [`${title}`]: +value,
-            },
-          }))
-        }
-        defaultValue={value && `${value}`}
-        keyboardType="number-pad"
-      />
+      <TitleContainer backgroundColor={backgroundColor ?? border}>
+        <Title textColor={contrastText}>{!hideTitle && title}</Title>
+      </TitleContainer>
+      <ValueContainer backgroundColor={lighten(0.15, board)}>
+        <Value
+          textColor={CONTRAST_TEXT_INVERSE[contrastText]}
+          onChangeText={(value) =>
+            dispatch((prev) => ({
+              ...prev,
+              gameDetails: {
+                ...prev.gameDetails,
+                [`${title}`]: +value,
+              },
+            }))
+          }
+          defaultValue={value ? `${value}` : undefined}
+          keyboardType="number-pad"
+        />
+      </ValueContainer>
     </StyledBox>
   );
 };
 
-const NAV_ITEMS = [{ title: "Show Match Details" }];
+const NAV_ITEMS = [{ title: "Set Match Details" }];
 
 const GameDetails: React.FC = () => {
   const { board, border, contrastText, biscuitColorLeft, biscuitColorRight } =
@@ -92,6 +89,11 @@ const GameDetails: React.FC = () => {
             backgroundColor={biscuitColorRight}
           />
         </GameDetailsContainer>
+        <Message>
+          Game details are optional. Any details you fill out will be added to
+          the bottom of the screenshot(s) you generate with{" "}
+          <Bold>shuff.app</Bold>.
+        </Message>
       </DropdownLinksContainer>
     );
   };
@@ -127,22 +129,44 @@ const StyledBox = styled.View`
   box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px;
 `;
 
-const Title = styled.Text`
+const TitleContainer = styled.View`
   background-color: ${({ backgroundColor }) => backgroundColor};
+  padding: 8px 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-radius: 4px;
+`;
+
+const Title = styled.Text`
   color: ${({ textColor }) => textColor};
   font-size: 13px;
   font-weight: bold;
   text-align: center;
-  text-transform: uppercase;
-  padding: 8px 4px;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+`;
+
+const ValueContainer = styled.View`
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  padding: 8px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 `;
 
 const Value = styled.TextInput`
-  background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ textColor }) => textColor};
   font-size: 28px;
   font-weight: bold;
   text-align: center;
-  padding: 8px;
+  text-align: center;
+`;
+
+const Message = styled.Text`
+  font-size: 11px;
+  padding: 4px 8px;
+  line-height: 15px;
+`;
+
+const Bold = styled.Text`
+  font-weight: bold;
 `;

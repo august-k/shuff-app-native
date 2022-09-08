@@ -9,7 +9,7 @@ import DropdownTitle from "./DropdownTitle";
 import ShadowBar from "./ShadowBar";
 import { CONTRAST_TEXT_INVERSE } from "../../utils";
 
-const NAV_ITEMS = [{ title: "Select a Theme", data: Object.keys(themes) }];
+const NAV_ITEMS = [{ title: "Choose a Theme", data: Object.keys(themes) }];
 
 const ThemePicker: React.FC = () => {
   const { state: globalState, dispatch } = useGlobalState();

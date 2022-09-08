@@ -13,7 +13,7 @@ const MoveDisc = (entities, { touches }) => {
           const { body } = entities[key];
           const { x: dX, y: dY } = body.position;
           const { pageX: tX, pageY: tY } = t.event;
-          const dS = DISC_OPTIONS["size"] * 2;
+          const dS = DISC_OPTIONS["size"] * 1.25;
           const xRange = isBetween(tX, dX - dS, dX + dS);
           const yRange = isBetween(tY, dY - dS, dY + dS);
 
