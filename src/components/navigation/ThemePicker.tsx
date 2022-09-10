@@ -44,11 +44,11 @@ const ThemePicker: React.FC = () => {
             />
           );
         })}
-        <Message>
+        {/* <Message>
           If you'd like to suggest a theme to add to <Bold>shuff.app</Bold>{" "}
           reach out to us in the <Bold>#suggestions-and-help</Bold> channel on
           our <Link url={DISCORD_LINK}>Discord server</Link>.
-        </Message>
+        </Message> */}
       </DropdownLinksContainer>
     );
   };

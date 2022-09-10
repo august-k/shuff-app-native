@@ -1,5 +1,5 @@
 import * as Linking from "expo-linking";
-import { styled } from "styled-components/native";
+import styled from "styled-components/native";
 import { Pressable } from "react-native";
 
 type LinkProps = {
